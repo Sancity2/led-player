@@ -2,9 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>LED Player</title>
+  <title>自动播放专用</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* 1. 清除所有边距，让画面铺满 */
     html, body {
       margin: 0;
       padding: 0;
@@ -13,21 +14,34 @@
       background: black;
       overflow: hidden;
     }
+    /* 2. iframe 强制全屏 */
     iframe {
       width: 100vw;
       height: 100vh;
       border: none;
-      pointer-events: none; /* 妙招：禁止用户点击画面，防止暂停 */
+      display: block; /* 消除底部微小缝隙 */
+    }
+    /* 3. 禁止用户交互层（可选）：防止用户点击导致暂停 */
+    .blocker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background: transparent;
     }
   </style>
 </head>
 <body>
 
-<iframe
-  src="https://www.youtube.com/embed/fZE0mqQrNaE?autoplay=1&mute=1&controls=0&rel=0&fs=1&loop=1&playlist=fZE0mqQrNaE&playsinline=1"
-  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-  allowfullscreen>
-</iframe>
+  <div class="blocker"></div>
+
+  <iframe
+    src="https://piped.video/embed/fZE0mqQrNaE?autoplay=1&muted=1&loops=1&controls=0&player_style=youtube"
+    allow="autoplay; encrypted-media; fullscreen"
+    allowfullscreen>
+  </iframe>
 
 </body>
 </html>
