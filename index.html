@@ -1,55 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <!-- 关键：允许向 YouTube 提供来源 -->
-    <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="referrer"
+      content="strict-origin-when-cross-origin">
 
-    <title>LED Player</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
 
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-        }
+<style>
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: black;
+}
 
-        iframe {
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            pointer-events: none;
-        }
-    </style>
+#player {
+    width: 100vw;
+    height: 100vh;
+}
+</style>
 </head>
 
 <body>
 
-<iframe
-    id="youtubePlayer"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-    allowfullscreen>
-</iframe>
+<div id="player"></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-    const videoId = "XXL29qKb0Jo";
-    const origin = window.location.origin;
+let player;
 
-    document.getElementById("youtubePlayer").src =
-        "https://www.youtube.com/embed/" + videoId +
-        "?autoplay=1" +
-        "&mute=1" +
-        "&controls=0" +
-        "&loop=1" +
-        "&playlist=" + videoId +
-        "&playsinline=1" +
-        "&origin=" + encodeURIComponent(origin);
+function onYouTubeIframeAPIReady() {
+
+    player = new YT.Player('player', {
+
+        videoId: 'XXL29qKb0Jo',
+
+        width: '100%',
+        height: '100%',
+
+        playerVars: {
+            autoplay: 1,
+            mute: 1,
+            controls: 0,
+            playsinline: 1,
+            loop: 1,
+            playlist: 'XXL29qKb0Jo',
+            origin: window.location.origin
+        },
+
+        events: {
+            onReady: function(event) {
+                event.target.mute();
+                event.target.playVideo();
+            },
+
+            onStateChange: function(event) {
+                if (event.data === YT.PlayerState.ENDED) {
+                    event.target.playVideo();
+                }
+            }
+        }
+    });
+}
 </script>
 
 </body>
